@@ -1,5 +1,5 @@
 module.exports = {
-    jwtSecret: 'deven8888', // Replace with a strong and unique secret key
+    jwtSecret: 'deven8888',
     database: {
       host: 'localhost',
       user: 'root',

@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 
-// Create a MySQL database connection
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -13,7 +12,6 @@ const db = mysql.createConnection({
   database: 'mattracker',
 });
 
-// Connect to the database
 db.connect((err) => {
   if (err) {
     console.error('Database connection failed: ' + err.message);
@@ -37,14 +35,13 @@ router.post('/register', (req, res) => {
     if (results.length > 0) {
       res.status(400).json({ error: 'Username already exists' });
     } else {
-      // Hash the password before storing it in the database
+      // Hash the password before storing
       bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
         if (hashErr) {
           res.status(500).json({ error: 'Internal server error' });
           return;
         }
 
-        // Insert the new user into the database
         const insertUserQuery = 'INSERT INTO users (username, password) VALUES (?, ?)';
         db.query(insertUserQuery, [username, hashedPassword], (insertErr) => {
           if (insertErr) {
@@ -74,14 +71,12 @@ router.post('/login', (req, res) => {
     if (results.length === 0) {
       res.status(401).json({ error: 'Authentication failed' });
     } else {
-      // Compare the provided password with the stored hashed password
       bcrypt.compare(password, results[0].password, (compareErr, match) => {
         if (compareErr || !match) {
           res.status(401).json({ error: 'Authentication failed' });
           return;
         }
 
-        // Create a JWT token for authentication
         const token = jwt.sign(
           { userId: results[0].id, username: results[0].username },
           config.jwtSecret,
