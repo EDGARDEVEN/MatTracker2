@@ -3,14 +3,14 @@ const router = express.Router();
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const config = require('../config'); // Create a config.js file to store your secrets
+const config = require('../config');
 
 // Create a MySQL database connection
 const db = mysql.createConnection({
-  host: 'your-database-host',
-  user: 'your-database-user',
-  password: 'your-database-password',
-  database: 'your-database-name',
+  host: 'localhost',
+  user: 'root',
+  password: '8257',
+  database: 'mattracker',
 });
 
 // Connect to the database
